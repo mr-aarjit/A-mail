@@ -1,5 +1,10 @@
 from .models import Mail
-from .logic import Mail_geneneration
+from .logic import (
+    Mail_geneneration,
+    MISSING_CONFIG_MESSAGE,
+    SERVICE_UNAVAILABLE_MESSAGE,
+    UNRELATED_REQUEST_MESSAGE,
+)
 from django.shortcuts import render, redirect
 from django.db import DatabaseError
 
@@ -34,7 +39,12 @@ def generated(request):
             print('We used existing mail')
         else:
             created_mail = Mail_geneneration(user_prompt)
-            if ( created_mail != "Hello, I am Aarjit's Mail Generator. I am designed to generate mails." and created_mail != "Service temporarily unavailable due to API limits. "):
+            should_store = created_mail not in {
+                UNRELATED_REQUEST_MESSAGE,
+                MISSING_CONFIG_MESSAGE,
+                SERVICE_UNAVAILABLE_MESSAGE,
+            }
+            if should_store:
                 try:
                     Mail.objects.create(
                         prompt=user_prompt,

@@ -1,5 +1,8 @@
 import os
 
+UNRELATED_REQUEST_MESSAGE = "Hello, I am Aarjit's Mail Generator. I am designed to generate mails."
+SERVICE_UNAVAILABLE_MESSAGE = "Service temporarily unavailable due to API limits."
+MISSING_CONFIG_MESSAGE = "Service temporarily unavailable due to missing API configuration."
 
 SYSTEM_PROMPT = """
 You are an elite professional email writer whose name is Aarjit's Mail generator for executives and business leaders.
@@ -56,7 +59,7 @@ def Mail_geneneration(propmt):
             openai_client = None
 
     if cohere_client is None and openai_client is None:
-        return "Service temporarily unavailable due to missing API configuration."
+        return MISSING_CONFIG_MESSAGE
 
     try:
         if cohere_client is None:
@@ -86,4 +89,4 @@ def Mail_geneneration(propmt):
             )
             return response2.choices[0].message.content
         except Exception:
-            return "Service temporarily unavailable due to API limits."
+            return SERVICE_UNAVAILABLE_MESSAGE

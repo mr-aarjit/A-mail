@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get(
     'DJANGO_SECRET_KEY',
-    'django-insecure-bo%eccgrn5g2jdtxm-nvsvl+&7r3b7knthde(&6x+zyexv(hsj',
+    's6f-0h4v3x$z9!k2@q7m1#c8p5r_t9n4y2u7i0o3p6l8w1e4r5t7y9u',
 )
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -33,6 +33,7 @@ ALLOWED_HOSTS = [
     '.vercel.app',
     '127.0.0.1',
     'localhost',
+    'testserver',
 ]
 
 
@@ -130,4 +131,14 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 WHITENOISE_USE_FINDERS = True
+
+if not DEBUG:
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
