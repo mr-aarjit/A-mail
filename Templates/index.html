@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    {% load static %}
+    <link href="https://fonts.googleapis.com/css2?family=Nosifer&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=New+Rocker&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static "css/index.css" %}">
+   
+    
+  </head>
+
+  <body>
+    <header>
+      <h1>A-mail Generator</h1>
+
+      <form method="POST" action="{% url 'main' %}">
+        {% csrf_token %}
+        <button type="submit" id="btn" name="btn">Start</button>
+      </form>
+    </header>
+    <script src="{% static "js/index.js" %}">
+
+    </script>
+  </body>
+</html>

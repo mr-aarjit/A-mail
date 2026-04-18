@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aarjit's Mail Generator</title>
+    {% load static %}
+    <link href="https://fonts.googleapis.com/css2?family=Nosifer&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=New+Rocker&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Almendra+Display&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static "css/prompt.css" %}">
+</head>
+
+<body>
+
+    <header>
+        <h1>A-Mail Generator</h1>
+    </header>
+
+    <form method="POST" action="{% url 'generate' %}">
+        {% csrf_token %}
+        <input type="text" id="input_box" name="prompt" placeholder="Enter your prompt">
+        <button id="button" type="submit">
+            <img id="button_image" src="{% static 'images/pokeball.png' %}" width="40" alt="Pokeball">
+        </button>
+    </form>
+
+    <script src={% static "js/prompt.js" %}>
+    </script>
+
+</body>
+
+</html>

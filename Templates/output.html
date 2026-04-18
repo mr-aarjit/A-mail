@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aarjit's Mail Generator</title>
+    {% load static %}
+    <link href="https://fonts.googleapis.com/css2?family=Nosifer&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=New+Rocker&display=swap"  rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Almendra+Display&display=swap" rel="stylesheet"  />
+    <link href="https://fonts.googleapis.com/css2?family=Italiana&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static "css/output.css" %}">
+
+  </head>
+
+  <body>
+    <header>
+      <h1>A-Mail Generator</h1>
+    </header>
+
+    <div id="output">
+          <i id="copy_btn" class="fa-regular fa-copy"></i> 
+        <div id="output_text"> {{generated_email|linebreaksbr}}  </div>  
+    </div>
+
+    <script src="{% static "js/output.js" %}">
+      
+    </script>
+  </body>
+</html>
