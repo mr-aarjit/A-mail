@@ -6,10 +6,15 @@
       "use": "@vercel/python"
     }
   ],
+  "functions": {
+    "api/index.py": {
+      "includeFiles": [
+        "Templates/**",
+        "static/**"
+      ]
+    }
+  },
   "routes": [
-    {
-      "handle": "filesystem"
-    },
     {
       "src": "/(.*)",
       "dest": "api/index.py"
