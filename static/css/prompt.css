@@ -1,0 +1,87 @@
+ 
+        *{
+            position: sticky;
+            
+        }
+
+        body {
+            background-color: #000;
+            display:block;
+            align-items: center;
+            justify-content: center;
+            
+            margin: 0;
+        }
+
+        header {
+        color: rgb(255, 255, 255);
+        font-family: 'Nosifer', cursive, sans-serif;
+        margin-top: -20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* centers paragraph & button */
+      }
+
+        header h1 {
+            font-size: 80px;
+            animation: floatupdown 5s ease-in-out infinite;
+        }
+
+        form {
+            margin-top: 100px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-left: 250px;
+
+        }
+
+        #input_box {
+           padding: 17px;
+           height: 4;
+           width: 700px;
+           background-color: #000000a1;
+           border: lightblue solid 1px;
+           border-radius: 10px 5px;
+           margin-left: 65px;
+
+        }
+
+
+        #input_box{
+            color: white;
+        }
+
+   
+        
+
+        @keyframes floatupdown {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+            100% { transform: translateY(0); }
+        }
+
+
+        #button{
+            background: black;
+            border: 0;
+            transition: ease .5s transform;
+        }
+
+        #button:hover{
+            animation: spin 0.65s ease-in-out  ;
+        }
+
+        .spin{
+            animation: spin 0.35s ease infinite;
+        }
+
+        
+
+        @keyframes spin{
+            from{
+                transform: rotate(0deg);
+            } to{
+                transform: rotate(360deg);
+            }
+        }
