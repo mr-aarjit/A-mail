@@ -1,4 +1,4 @@
-import cohere, openai
+import os
 
 
 SYSTEM_PROMPT = """
@@ -29,34 +29,61 @@ Return:
 "Hello, I am Aarjit's Mail Generator. I am designed to generate mails."
 """
 
-openai_client = openai.Client(
-    api_key  = "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",
-    base_url= "https://openrouter.ai/api/v1",
-)
-
-cohere_client = cohere.ClientV2(
-    api_key= "YT6kYqGD4qBToDKs19txBpCq32puEo5yBhPhbcj8" 
-    )
-
 def Mail_geneneration(propmt):
-    try:
-        response = cohere_client.chat(
-            model = "command-a-03-2025",
-            messages= [{"role": "system", "content": SYSTEM_PROMPT},{"role":"user", "content":propmt}],
-            max_tokens=500        )
+    cohere_api_key = os.environ.get("COHERE_API_KEY")
+    openrouter_api_key = os.environ.get("OPENROUTER_API_KEY")
 
-        return response.message.content[0].text
-        print("Cohere is used")
+    cohere_client = None
+    openai_client = None
 
-    except:
+    if cohere_api_key:
         try:
-            response2 = openai_client.chat.completions.create(
-                model = "codex-mini-latest",
-                messages = [{"role": "system", "content": SYSTEM_PROMPT},{"role":"user", "content":propmt}],
-                max_tokens=400
-            )
+            import cohere
 
-            return response.choices[0].message
-            print("Open_AI used")
-        except:
-            return "Server error, API tokens (limit) is finished, might get re-stocked soon. Sry, my bad"
+            cohere_client = cohere.ClientV2(api_key=cohere_api_key)
+        except Exception:
+            cohere_client = None
+
+    if openrouter_api_key:
+        try:
+            import openai
+
+            openai_client = openai.Client(
+                api_key=openrouter_api_key,
+                base_url="https://openrouter.ai/api/v1",
+            )
+        except Exception:
+            openai_client = None
+
+    if cohere_client is None and openai_client is None:
+        return "Service temporarily unavailable due to missing API configuration."
+
+    try:
+        if cohere_client is None:
+            raise RuntimeError("Cohere unavailable")
+
+        response = cohere_client.chat(
+            model="command-a-03-2025",
+            messages=[
+                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "user", "content": propmt},
+            ],
+            max_tokens=500,
+        )
+        return response.message.content[0].text
+    except Exception:
+        try:
+            if openai_client is None:
+                raise RuntimeError("OpenRouter unavailable")
+
+            response2 = openai_client.chat.completions.create(
+                model="openai/gpt-4o-mini",
+                messages=[
+                    {"role": "system", "content": SYSTEM_PROMPT},
+                    {"role": "user", "content": propmt},
+                ],
+                max_tokens=400,
+            )
+            return response2.choices[0].message.content
+        except Exception:
+            return "Service temporarily unavailable due to API limits."
