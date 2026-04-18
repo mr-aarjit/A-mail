@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-bo%eccgrn5g2jdtxm-nvsvl+&7r3b7knthde(&6x+zyexv(hsj
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["127.0.0.1", "localhost", "aarjit-mail-generator.onrender.com"]
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "aarjit-mail.onrender.com"]
 
 # Application definition
 
