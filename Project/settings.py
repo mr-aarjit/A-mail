@@ -95,20 +95,13 @@ WSGI_APPLICATION = 'Project.wsgi.application'
 
 # Local: SQLite. Production (Vercel): set DATABASE_URL to a hosted Postgres URL in the Vercel dashboard.
 # Serverless filesystems are not suitable for SQLite — use Postgres on Vercel.
-if os.environ.get('DATABASE_URL'):
-    DATABASES = {
-        'default': dj_database_url.config(
-            conn_max_age=600,
-            ssl_require=True,
-        ),
-    }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
+DATABASES = {
+    'default': dj_database_url.config(
+        default=os.environ.get('DATABASE_URL'),
+        conn_max_age=600,
+        ssl_require=True
+    )
+}
 
 # Django 4+ requires explicit trusted origins for HTTPS (admin login, forms).
 CSRF_TRUSTED_ORIGINS = []
