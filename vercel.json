@@ -1,19 +1,8 @@
 {
-  "version": 2,
-  "installCommand": "pip install -r requirements.txt && python manage.py collectstatic --noinput",
   "builds": [
-    {
-      "src": "api/index.py",
-      "use": "@vercel/python"
-    }
+    { "src": "project/wsgi.py", "use": "@vercel/python" }
   ],
   "routes": [
-    {
-      "handle": "filesystem"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "api/index.py"
-    }
+    { "src": "/(.*)", "dest": "project/wsgi.py" }
   ]
 }
