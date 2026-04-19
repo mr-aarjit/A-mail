@@ -13,13 +13,13 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 import os
 from pathlib import Path
 
+import dj_database_url
 from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv(BASE_DIR / ".env")
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
@@ -39,6 +39,11 @@ ALLOWED_HOSTS = [
     'localhost',
     'testserver',
 ]
+
+# Vercel sets VERCEL_URL to the deployment hostname (no scheme), e.g. project-name.vercel.app
+_vercel_url = os.environ.get('VERCEL_URL', '').strip()
+if _vercel_url and _vercel_url not in ALLOWED_HOSTS:
+    ALLOWED_HOSTS.append(_vercel_url)
 
 
 # Application definition
@@ -88,12 +93,42 @@ WSGI_APPLICATION = 'Project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# Local: SQLite. Production (Vercel): set DATABASE_URL to a hosted Postgres URL in the Vercel dashboard.
+# Serverless filesystems are not suitable for SQLite — use Postgres on Vercel.
+if os.environ.get('DATABASE_URL'):
+    DATABASES = {
+        'default': dj_database_url.config(
+            conn_max_age=600,
+            ssl_require=True,
+        ),
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+
+# Django 4+ requires explicit trusted origins for HTTPS (admin login, forms).
+CSRF_TRUSTED_ORIGINS = []
+if DEBUG:
+    CSRF_TRUSTED_ORIGINS.extend(
+        [
+            'http://127.0.0.1:8000',
+            'http://localhost:8000',
+        ]
+    )
+else:
+    _extra = os.environ.get('CSRF_TRUSTED_ORIGINS', '').strip()
+    if _extra:
+        CSRF_TRUSTED_ORIGINS.extend(
+            [o.strip() for o in _extra.split(',') if o.strip()]
+        )
+    if _vercel_url:
+        CSRF_TRUSTED_ORIGINS.append(
+            _vercel_url if _vercel_url.startswith('http') else f'https://{_vercel_url}'
+        )
 
 
 # Password validation
