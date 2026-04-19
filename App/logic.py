@@ -32,9 +32,14 @@ Return:
 "Hello, I am Aarjit's Mail Generator. I am designed to generate mails."
 """
 
+def _env_key(name):
+    value = (os.environ.get(name) or "").strip()
+    return value or None
+
+
 def Mail_geneneration(propmt):
-    cohere_api_key = os.environ.get("COHERE_API_KEY")
-    openrouter_api_key = os.environ.get("OPENROUTER_API_KEY")
+    cohere_api_key = _env_key("COHERE_API_KEY")
+    openrouter_api_key = _env_key("OPENROUTER_API_KEY")
 
     cohere_client = None
     openai_client = None
